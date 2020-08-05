@@ -15,25 +15,28 @@ import Sidebar from './Sidebar';
 
 const App = () => {
   return (
-    <Router>
-      <Switch>
-        <Route path="/">
-          <Home />
-        </Route>
-        <Route path="/notifications">
-          <Notifications />
-        </Route>
-        <Route path="/bookmarks">
-          <Bookmarks />
-        </Route>
-        <Route path="/tweet/:tweetId">
-          <TweetDetails />
-        </Route>
-        <Route path="/:profileId">
-          <Profile />
-        </Route>
-      </Switch>
-    </Router>
+    <>
+      <Sidebar />
+      <Router>
+        <Switch>
+          <Route path="/">
+            <Home />
+          </Route>
+          <Route path="/notifications">
+            <Notifications />
+          </Route>
+          <Route path="/bookmarks">
+            <Bookmarks />
+          </Route>
+          <Route path="/tweet/:tweetId">
+            <TweetDetails />
+          </Route>
+          <Route path="/:profileId">
+            <Profile />
+          </Route>
+        </Switch>
+      </Router>
+    </>
   )
 };
 
