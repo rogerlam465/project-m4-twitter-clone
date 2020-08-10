@@ -51,7 +51,7 @@ const Sidebar = () => {
             <Nav>
                 <HeaderIcon><GiWhiteCat /></HeaderIcon>
                 <StyledUl>
-                    <MenuLink><NavigationLink to="/"><IconSpan><FiHome /></IconSpan>Home</NavigationLink></MenuLink>
+                    <MenuLink><NavigationLink exact to="/"><IconSpan><FiHome /></IconSpan>Home</NavigationLink></MenuLink>
                     <MenuLink><NavigationLink to="/treasurymog"><IconSpan><FiUser /></IconSpan>Profile</NavigationLink></MenuLink> {/* this will eventually need to become dynamic depending on API response*/}
                     <MenuLink><NavigationLink to="/notifications"><IconSpan><IoMdNotificationsOutline /></IconSpan>Notifications</NavigationLink></MenuLink>
                     <MenuLink><NavigationLink to="/bookmarks"><IconSpan><FiBookmark /></IconSpan>Bookmarks</NavigationLink></MenuLink>

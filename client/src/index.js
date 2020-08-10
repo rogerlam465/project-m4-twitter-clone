@@ -4,9 +4,13 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import { CurrentUserProvider } from './CurrentUserContext';
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <CurrentUserProvider>
+      <App />
+    </CurrentUserProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
