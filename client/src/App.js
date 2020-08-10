@@ -2,8 +2,7 @@ import React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 
 import Notifications from './Notifications';
@@ -14,6 +13,7 @@ import TweetDetails from './TweetDetails';
 import Sidebar from './Sidebar';
 
 const App = () => {
+
   return (
     <>
       <Sidebar />
