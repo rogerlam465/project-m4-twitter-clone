@@ -1,20 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-const HomeFeed = () => {
+const HomeFeed = (props) => {
 
-    async function getFeed() {
-        try {
-            let feedDataHolder = await fetch('/api/me/home-feed');
-            let feedData = await feedDataHolder.json();
-            return feedData;
-        } catch (err) {
-            console.log(err);
-        }
-    }
+    console.log(props);
 
-    console.log(getFeed().then(data => console.log(data)));
-
-    return <div>HomeFeed</div>;
+    return <div>HomeFeed{props.info}</div>;
 };
 
 export default HomeFeed;

@@ -19,10 +19,12 @@ import Sidebar from './Sidebar';
 // Par contre, if the data is available, we should load everything.
 
 import { CurrentUserContext } from './CurrentUserContext';
+import { CurrentFeedContext } from './HomeFeedContext';
 
 const App = () => {
 
   const { currentUser, setCurrentUser, status, setStatus } = React.useContext(CurrentUserContext);
+  const { currentFeed, setFeed, feedStatus, setFeedStatus } = React.useContext(CurrentFeedContext);
 
   if (status != "loading") {
     return (
@@ -31,7 +33,7 @@ const App = () => {
         <Router>
           <Switch>
             <Route exact path="/">
-              <Home />
+              <Home info={"info"} />
             </Route>
             <Route path="/notifications">
               <Notifications />
