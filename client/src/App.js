@@ -18,6 +18,9 @@ import Sidebar from './Sidebar';
 
 // Par contre, if the data is available, we should load everything.
 
+// in the long run, we should just combine all context into a single context file.
+// until we can do that, though, whatever works.
+
 import { CurrentUserContext } from './CurrentUserContext';
 import { CurrentFeedContext } from './HomeFeedContext';
 
@@ -26,18 +29,15 @@ const App = () => {
   const { currentUser, setCurrentUser, status, setStatus } = React.useContext(CurrentUserContext);
   const { currentFeed, setFeed, feedStatus, setFeedStatus } = React.useContext(CurrentFeedContext);
 
-  if (status !== "loading") {
-
-    // logically, because all this shit is loaded, status has to be done.
-
-    console.log(currentUser);
+  if (status != "loading") {
+    console.log("in app.js", currentFeed)
     return (
       <>
         <Sidebar />
         <Router>
           <Switch>
             <Route exact path="/">
-              <Home info={currentFeed} />
+              <Home />
             </Route>
             <Route path="/notifications">
               <Notifications />
