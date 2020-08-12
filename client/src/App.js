@@ -26,14 +26,18 @@ const App = () => {
   const { currentUser, setCurrentUser, status, setStatus } = React.useContext(CurrentUserContext);
   const { currentFeed, setFeed, feedStatus, setFeedStatus } = React.useContext(CurrentFeedContext);
 
-  if (status != "loading") {
+  if (status !== "loading") {
+
+    // logically, because all this shit is loaded, status has to be done.
+
+    console.log(currentUser);
     return (
       <>
         <Sidebar />
         <Router>
           <Switch>
             <Route exact path="/">
-              <Home info={"info"} />
+              <Home info={currentFeed} />
             </Route>
             <Route path="/notifications">
               <Notifications />

@@ -1,5 +1,10 @@
 import React, { useEffect } from 'react';
 
+// from what Mae said, it sounds like we need, like, multiple feeds
+// and the project is kind of encouraging us to use context everywhere
+// So I'm wondering if we shouldn't just convert CurrentUserContext
+// to OverallContext and have an array of states. I mean, why not.
+
 export const CurrentUserContext = React.createContext(null);
 
 export const CurrentUserProvider = ({ children }) => {
