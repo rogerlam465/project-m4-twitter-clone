@@ -37,7 +37,7 @@ const HomeFeed = () => {
         //         console.log(tweetId);
         //     })
         // )
-        console.log("wtf", currentFeed.tweetIds);
+        console.log("wtf", currentFeed);
         return <div>what</div>
     }
 
