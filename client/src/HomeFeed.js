@@ -28,17 +28,32 @@ const HomeFeed = () => {
 
     const { currentFeed, setFeed, feedStatus, setFeedStatus } = React.useContext(CurrentFeedContext);
 
-    if (feedStatus === null) {
+    if (feedStatus === "loading") {
         return <div>Loading...</div>;
     } else {
-        // let tweetIds = currentFeed.tweetIds;
-        // return (
-        //     tweetIds.map(tweetId => {
-        //         console.log(tweetId);
-        //     })
-        // )
-        console.log("wtf", currentFeed);
-        return <div>what</div>
+        let tweetIds = currentFeed.tweetIds;
+        return (
+            tweetIds.map(tweetId => {
+                let thisTweet = currentFeed.tweetsById[tweetId];
+                if (thisTweet['media'][0]) {
+                    return (
+                        <FeedTweet>
+                            <div>{thisTweet["status"]}</div>
+                            <div><img src={thisTweet['media'][0]['url']} /></div>
+                        </FeedTweet>
+                    )
+                } else {
+                    return (
+                        <FeedTweet>
+                            <div>{thisTweet["status"]}</div>
+                        </FeedTweet>
+                    )
+                }
+
+            })
+        )
+
+
     }
 
 };

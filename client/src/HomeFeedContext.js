@@ -17,14 +17,11 @@ export const CurrentFeedProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        if (currentFeed === null) {
-            getFeedData().then(data => {
-                console.log("inside effect", data); // I think this works right.
-                setFeed(data);
-            });
+        getFeedData().then(data => {
+            setFeed(data);
             setFeedStatus("done");
-        }
-    })
+        });
+    }, [])
 
 
     return (
