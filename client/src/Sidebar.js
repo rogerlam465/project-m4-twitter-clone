@@ -1,10 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router } from "react-router-dom";
 import styled from 'styled-components';
 import { NavLink } from "react-router-dom";
 import { COLORS } from "./constants";
 
-import { FiHome, FiUser, FiBookmark } from 'react-icons/fi';
+import { FiHome, FiUser, FiBookmark, FiShare } from 'react-icons/fi';
+import { FaRegComment, FaRetweet, FaRegHeart } from 'react-icons/fa';
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { GiWhiteCat } from "react-icons/gi";
 
@@ -63,17 +63,17 @@ const MeowButton = styled.button`
 const Sidebar = () => {
     return (
         <Wrapper>
-            <Router>
-                <Nav>
-                    <HeaderIcon><GiWhiteCat /></HeaderIcon>
-                    <StyledUl>
-                        <MenuLink><NavigationLink exact to="/"><IconSpan><FiHome /></IconSpan>Home</NavigationLink></MenuLink>
-                        <MenuLink><NavigationLink to="/treasurymog"><IconSpan><FiUser /></IconSpan>Profile</NavigationLink></MenuLink> {/* this will eventually need to become dynamic depending on API response*/}
-                        <MenuLink><NavigationLink to="/notifications"><IconSpan><IoMdNotificationsOutline /></IconSpan>Notifications</NavigationLink></MenuLink>
-                        <MenuLink><NavigationLink to="/bookmarks"><IconSpan><FiBookmark /></IconSpan>Bookmarks</NavigationLink></MenuLink>
-                    </StyledUl>
-                </Nav>
-            </Router>
+
+            <Nav>
+                <HeaderIcon><GiWhiteCat /></HeaderIcon>
+                <StyledUl>
+                    <MenuLink><NavigationLink exact to="/"><IconSpan><FiHome /></IconSpan>Home</NavigationLink></MenuLink>
+                    <MenuLink><NavigationLink to="/treasurymog"><IconSpan><FiUser /></IconSpan>Profile</NavigationLink></MenuLink> {/* this will eventually need to become dynamic depending on API response*/}
+                    <MenuLink><NavigationLink to="/notifications"><IconSpan><IoMdNotificationsOutline /></IconSpan>Notifications</NavigationLink></MenuLink>
+                    <MenuLink><NavigationLink to="/bookmarks"><IconSpan><FiBookmark /></IconSpan>Bookmarks</NavigationLink></MenuLink>
+                </StyledUl>
+            </Nav>
+
             <MeowButton>Meow</MeowButton>
         </Wrapper>
     )

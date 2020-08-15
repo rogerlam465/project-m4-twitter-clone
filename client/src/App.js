@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import GlobalStyle from './GlobalStyles';
 import Notifications from './Notifications';
 import Bookmarks from './Bookmarks';
-import Home from './HomeFeed';
+import HomeFeed from './HomeFeed';
 import Profile from './Profile';
 import TweetDetails from './TweetDetails';
 import Sidebar from './Sidebar';
@@ -40,14 +40,14 @@ const App = () => {
   if (status !== "loading") {
     return (
       <>
-        <GlobalStyle />
-        <ContentWrapper>
-          <Sidebar />
+        <Router>
+          <GlobalStyle />
+          <ContentWrapper>
+            <Sidebar />
 
-          <Router>
             <Switch>
               <Route exact path="/">
-                <Home />
+                <HomeFeed />
               </Route>
               <Route path="/notifications">
                 <Notifications />
@@ -62,8 +62,9 @@ const App = () => {
                 <Profile />
               </Route>
             </Switch>
-          </Router>
-        </ContentWrapper>
+
+          </ContentWrapper>
+        </Router>
       </>
     )
   } else {
