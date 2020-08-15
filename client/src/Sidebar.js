@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import styled from 'styled-components';
 import { NavLink } from "react-router-dom";
 import { COLORS } from "./constants";
@@ -8,13 +8,19 @@ import { FiHome, FiUser, FiBookmark } from 'react-icons/fi';
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { GiWhiteCat } from "react-icons/gi";
 
+const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
 const Nav = styled.nav`
-    margin: 20px;
+    margin: 20px 0 0 20px;
 `
 
 const StyledUl = styled.ul`
-    width: 300px;
+    width: 200px;
     font-size: 20px;
+    padding: 0;
 `;
 
 const MenuLink = styled.li`
@@ -39,25 +45,37 @@ const IconSpan = styled.span`
 `;
 
 const HeaderIcon = styled.div`
-    text-align: center;
-    width: 300px;
     font-size: 50px;
     color: ${COLORS.primary};
 `
 
+const MeowButton = styled.button`
+    width: 200px;
+    border-radius: 25px;
+    font-size: 20px;
+    background: ${COLORS.primary};
+    color: white;
+    padding: 10px 0;
+    border: none;
+    margin: 0 20px 20px 20px;
+`
+
 const Sidebar = () => {
     return (
-        <Router>
-            <Nav>
-                <HeaderIcon><GiWhiteCat /></HeaderIcon>
-                <StyledUl>
-                    <MenuLink><NavigationLink exact to="/"><IconSpan><FiHome /></IconSpan>Home</NavigationLink></MenuLink>
-                    <MenuLink><NavigationLink to="/treasurymog"><IconSpan><FiUser /></IconSpan>Profile</NavigationLink></MenuLink> {/* this will eventually need to become dynamic depending on API response*/}
-                    <MenuLink><NavigationLink to="/notifications"><IconSpan><IoMdNotificationsOutline /></IconSpan>Notifications</NavigationLink></MenuLink>
-                    <MenuLink><NavigationLink to="/bookmarks"><IconSpan><FiBookmark /></IconSpan>Bookmarks</NavigationLink></MenuLink>
-                </StyledUl>
-            </Nav>
-        </Router>
+        <Wrapper>
+            <Router>
+                <Nav>
+                    <HeaderIcon><GiWhiteCat /></HeaderIcon>
+                    <StyledUl>
+                        <MenuLink><NavigationLink exact to="/"><IconSpan><FiHome /></IconSpan>Home</NavigationLink></MenuLink>
+                        <MenuLink><NavigationLink to="/treasurymog"><IconSpan><FiUser /></IconSpan>Profile</NavigationLink></MenuLink> {/* this will eventually need to become dynamic depending on API response*/}
+                        <MenuLink><NavigationLink to="/notifications"><IconSpan><IoMdNotificationsOutline /></IconSpan>Notifications</NavigationLink></MenuLink>
+                        <MenuLink><NavigationLink to="/bookmarks"><IconSpan><FiBookmark /></IconSpan>Bookmarks</NavigationLink></MenuLink>
+                    </StyledUl>
+                </Nav>
+            </Router>
+            <MeowButton>Meow</MeowButton>
+        </Wrapper>
     )
 };
 

@@ -5,6 +5,9 @@ import React, { useEffect } from 'react';
 // So I'm wondering if we shouldn't just convert CurrentUserContext
 // to OverallContext and have an array of states. I mean, why not.
 
+// because that's a bad effin' idea, that's why! small is easier
+// to understand!
+
 export const CurrentUserContext = React.createContext(null);
 
 export const CurrentUserProvider = ({ children }) => {

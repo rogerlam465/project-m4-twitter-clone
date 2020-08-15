@@ -4,7 +4,9 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import styled from 'styled-components';
 
+import GlobalStyle from './GlobalStyles';
 import Notifications from './Notifications';
 import Bookmarks from './Bookmarks';
 import Home from './HomeFeed';
@@ -18,41 +20,50 @@ import Sidebar from './Sidebar';
 
 // Par contre, if the data is available, we should load everything.
 
-// in the long run, we should just combine all context into a single context file.
-// until we can do that, though, whatever works.
+// in the long run, it's tempting to combine all contexts into a single context
+// but per Dan Hackl, it's usually better to keep things atomic for easier
+// debugging. I can buy that.
 
 import { CurrentUserContext } from './CurrentUserContext';
 import { CurrentFeedContext } from './HomeFeedContext';
+
+const ContentWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`
 
 const App = () => {
 
   const { currentUser, setCurrentUser, status, setStatus } = React.useContext(CurrentUserContext);
   const { currentFeed, setFeed, feedStatus, setFeedStatus } = React.useContext(CurrentFeedContext);
 
-  if (status != "loading") {
-    console.log("in app.js", currentFeed)
+  if (status !== "loading") {
     return (
       <>
-        <Sidebar />
-        <Router>
-          <Switch>
-            <Route exact path="/">
-              <Home />
-            </Route>
-            <Route path="/notifications">
-              <Notifications />
-            </Route>
-            <Route path="/bookmarks">
-              <Bookmarks />
-            </Route>
-            <Route path="/tweet/:tweetId">
-              <TweetDetails />
-            </Route>
-            <Route path="/:profileId">
-              <Profile />
-            </Route>
-          </Switch>
-        </Router>
+        <GlobalStyle />
+        <ContentWrapper>
+          <Sidebar />
+
+          <Router>
+            <Switch>
+              <Route exact path="/">
+                <Home />
+              </Route>
+              <Route path="/notifications">
+                <Notifications />
+              </Route>
+              <Route path="/bookmarks">
+                <Bookmarks />
+              </Route>
+              <Route path="/tweet/:tweetId">
+                <TweetDetails />
+              </Route>
+              <Route path="/:profileId">
+                <Profile />
+              </Route>
+            </Switch>
+          </Router>
+        </ContentWrapper>
       </>
     )
   } else {
