@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import { NavLink } from "react-router-dom";
 import { COLORS } from "./constants";
 
-import { FiHome, FiUser, FiBookmark, FiShare } from 'react-icons/fi';
-import { FaRegComment, FaRetweet, FaRegHeart } from 'react-icons/fa';
+import { FiHome, FiUser, FiBookmark } from 'react-icons/fi';
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { GiWhiteCat } from "react-icons/gi";
 
