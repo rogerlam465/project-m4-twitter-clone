@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { COLORS } from "./constants";
 
@@ -31,7 +31,11 @@ const NewTweetUIBox = styled.div`
     display: flex;
     justify-content: flex-end;
     width: 100%;
+    align-items: center;
 `
+
+// why does this guy stay stuck to the bottom?
+// he continues to vex me. this cannot be borne.
 
 const NewTweetMeowButton = styled.button`
     border-radius: 25px;
@@ -53,6 +57,17 @@ const TweetForm = () => {
 
     const { currentUser, setCurrentUser, status, setStatus } = React.useContext(CurrentUserContext);
 
+    const [charCountLeft, setCharCountLeft] = useState(280);
+
+    useEffect(() => {
+        const charBox = document.querySelector("#charCountLeft");
+        if (charCountLeft < 0) {
+            charBox.style.color = "red";
+        } else if (charCountLeft > 0 && charCountLeft <= 55) {
+            charBox.style.color = "yellow";
+        }
+    }, [charCountLeft]);
+
     if (status === "loading") {
         return <div>Loading...</div>;
     } else {
@@ -63,9 +78,12 @@ const TweetForm = () => {
                     <TweetPosterAvatarImg src={currentUser["profile"]["avatarSrc"]} />
                 </div>
                 <NewTweetFormWrapper>
-                    <NewTweetTextBox placeholder="What's happening?" />
+                    <NewTweetTextBox onKeyDown={() => {
+                        setCharCountLeft(280 - document.querySelector("#TweetTextBox").value.length - 1);
+                    }} id="TweetTextBox" maxlength="280" placeholder="What's happening?" />
                     <NewTweetUIBox>
-                        <NewTweetMeowButton>Meow</NewTweetMeowButton>
+                        <div><span id="charCountLeft">{charCountLeft}</span></div>
+                        <div><NewTweetMeowButton>Meow</NewTweetMeowButton></div>
                     </NewTweetUIBox>
                 </NewTweetFormWrapper>
             </Wrapper>
