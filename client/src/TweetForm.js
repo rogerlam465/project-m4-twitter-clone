@@ -68,6 +68,8 @@ const TweetForm = () => {
         }
     }, [charCountLeft]);
 
+    // TODO - capture content and use fetch to post it
+
     if (status === "loading") {
         return <div>Loading...</div>;
     } else {

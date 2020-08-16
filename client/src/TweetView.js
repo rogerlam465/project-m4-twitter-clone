@@ -116,8 +116,8 @@ const TimeSpan = styled.div`
 
 const TweetView = () => {
 
-    const { currentFeed, setFeed, feedStatus, setFeedStatus } = React.useContext(CurrentFeedContext);
-    const { currentUser, setCurrentUser, status, setStatus } = React.useContext(CurrentUserContext);
+    const { currentFeed, feedStatus } = React.useContext(CurrentFeedContext);
+    const { status } = React.useContext(CurrentUserContext);
 
     let { tweetId } = useParams();
 
