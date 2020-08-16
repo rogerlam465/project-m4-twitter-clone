@@ -11,7 +11,7 @@ import Notifications from './Notifications';
 import Bookmarks from './Bookmarks';
 import HomeFeed from './HomeFeed';
 import Profile from './Profile';
-import TweetDetails from './TweetDetails';
+import TweetView from './TweetView';
 import Sidebar from './Sidebar';
 
 // ok. So let's talk this out. I think the goal is to render conditionally.
@@ -56,7 +56,7 @@ const App = () => {
                 <Bookmarks />
               </Route>
               <Route path="/tweet/:tweetId">
-                <TweetDetails />
+                <TweetView />
               </Route>
               <Route path="/:profileId">
                 <Profile />

@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { format } from 'date-fns';
+import { Link } from "react-router-dom";
 
+import TweetForm from './TweetForm';
 import { CurrentUserContext } from './CurrentUserContext';
 import { CurrentFeedContext } from './HomeFeedContext';
 
@@ -14,16 +16,18 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     border-left: 1px lightgrey solid;
-    padding: 20px;
+    margin: 20px;
 `
 
 // TweetWrapper contains two elements: the avatar
 // and then the rest of the content in a row.
 
-const TweetWrapper = styled.div`
+const TweetWrapper = styled(Link)`
     display: flex;
     align-items: start;
-    margin-bottom: 20px;
+    margin: 20px 0 20px 20px;
+    text-decoration: none;
+    color: black;
 `
 
 // this needs to contain an avatar, that's it
@@ -87,32 +91,24 @@ const ActionBarIcon = styled.span`
 const ActiveActionBarIcon = styled(ActionBarIcon)`
     color: #237a3b};
 `
+const Header = styled.div`
+    padding-left: 20px;
+`
 
 const HomeFeed = () => {
-
-    // we're just showing all tweets in the db, but that's not right
-    // we should only show the tweets that are relevant to our current user
-    // oh my aching everything
 
     const { currentFeed, setFeed, feedStatus, setFeedStatus } = React.useContext(CurrentFeedContext);
     const { currentUser, setCurrentUser, status, setStatus } = React.useContext(CurrentUserContext);
 
-    if (status === "loading") {
-        return null;
-    } else {
-        console.log("what");
-        console.log(currentUser);
-    }
-
-    if (feedStatus === "loading") {
+    if (feedStatus === "loading" || status === "loading") {
         return <div>Loading...</div>;
     } else {
         const tweetIds = currentFeed.tweetIds;
 
         return (
             <Wrapper>
-                <h1>Home</h1>
-
+                <Header><h1>Home</h1></Header>
+                <TweetForm />
                 {tweetIds.map(tweetId => {
                     const thisTweet = currentFeed.tweetsById[tweetId];
                     const timeHold = Date.parse(thisTweet["timestamp"]); // this seems to work alright.
@@ -121,7 +117,7 @@ const HomeFeed = () => {
 
                     if (thisTweet['author']['isBeingFollowedByYou']) {
                         return (
-                            <TweetWrapper>
+                            <TweetWrapper to={'/tweet/' + thisTweet['id']}>
                                 <TweetPosterDetails>
                                     <TweetPosterAvatarImg src={thisTweet['author']["avatarSrc"]} />
                                 </TweetPosterDetails>

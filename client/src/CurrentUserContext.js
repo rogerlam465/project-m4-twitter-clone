@@ -25,13 +25,11 @@ export const CurrentUserProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        if (currentUser === null) {
-            getUserData().then(data => {
-                setCurrentUser(data);
-            });
+        getUserData().then(data => {
+            setCurrentUser(data);
             setStatus("done");
-        }
-    })
+        });
+    }, [])
 
 
     return (
