@@ -1,12 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
+import { format } from 'date-fns';
+
+import TweetFeed from './GenericFeed';
 import { CurrentUserContext } from './CurrentUserContext';
 import { CurrentFeedContext } from './HomeFeedContext';
+
+import { GrLocation } from 'react-icons/gr';
+import { FiCalendar } from 'react-icons/fi';
+
 
 // contains the whole lot
 
 const Wrapper = styled.div`
     width: 815px;
+    border-left: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+    font-size: 20px;
 `
 
 // contains profile background, avatar, user data
@@ -49,42 +59,110 @@ const FollowButton = styled.button`
     background: royalblue;
     color: white;
 `
+// one million divs and spans for individual UI components.
+// there's got to be a better way of doing this.
 
-const UserHandle = styled.span`
+const UserWrapper = styled.div`
+    padding: 0 10px;
 `
 
-const UserName = styled.span`
+const UserName = styled.div`
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 10px;
+`
+
+const UserHandle = styled.div`
+    color: grey;
+`
+
+const UserFollows = styled.span`
+    padding: 3px;
+    border-radius: 5px;
+    background: lightgrey;
+    font-size: 12px;
+    color: black;
+`
+
+const UserBio = styled.div`
+    margin: 10px 0;
+`
+
+const GreySpace = styled.span`
+    color: grey;
+    margin-right: 10px;
+`
+const Spacer = styled.div`
+    margin: 10px 0;
+`
+
+// profile feed incl. top menu thingy
+
+const MenuHolder = styled.div`
+    border-bottom: lightgrey 1px solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+`
+
+const OtherMenu = styled.div`
+    flex-grow: 1;
+    text-align: center;
+    font-size: 20px;
+`
+
+const TweetsMenu = styled(OtherMenu)`
+    border-bottom: 1px solid royalblue;
+`
+
+const MenuTitle = styled.div`
+    padding: 20px 0;
 `
 
 const Profile = () => {
 
-    const { currentFeed, feedStatus } = React.useContext(CurrentFeedContext);
+    const { feedStatus } = React.useContext(CurrentFeedContext);
     const { currentUser, status } = React.useContext(CurrentUserContext);
 
-    console.log(currentUser["profile"]);
+    const thisUser = currentUser["profile"];
+    const rawDate = Date.parse(thisUser["joined"]);
+    const dateHandler = format(rawDate, "MMMM y");
 
     if (status !== "done" || feedStatus !== "done") {
         return <div>>Loading...</div>
     } else {
+
+        console.log(thisUser);
+
         return (
             <Wrapper>
                 <UserDetails>
                     <UserBackgroundHolder>
-                        <UserBannerImg src={currentUser["profile"]["bannerSrc"]} />
+                        <UserBannerImg src={thisUser["bannerSrc"]} />
                     </UserBackgroundHolder>
                     <UserInfoWrapper>
                         <AvatarHolder>
-                            <AvatarImg src={currentUser["profile"]["avatarSrc"]} />
+                            <AvatarImg src={thisUser["avatarSrc"]} />
                         </AvatarHolder>
                         <FollowBox>
                             <FollowButton>Some dude</FollowButton>
                         </FollowBox>
                     </UserInfoWrapper>
                 </UserDetails>
-                <div>Profile what</div>
+                <UserWrapper>
+                    <UserName>{thisUser["displayName"]}</UserName>
+                    <UserHandle>@{thisUser["handle"]} <UserFollows>Follows you</UserFollows></UserHandle>
+                    <UserBio>{thisUser["bio"]}</UserBio>
+                    <Spacer><GreySpace><GrLocation />{thisUser["location"]}</GreySpace> <GreySpace><FiCalendar />Joined {dateHandler}</GreySpace></Spacer>
+                    <Spacer>{thisUser["numFollowing"]} <GreySpace>Following</GreySpace> {thisUser["numFollowers"]} <GreySpace>Followers</GreySpace></Spacer>
+                </UserWrapper>
+                <MenuHolder>
+                    <TweetsMenu><MenuTitle>Tweets</MenuTitle></TweetsMenu><OtherMenu><MenuTitle>Media</MenuTitle></OtherMenu><OtherMenu><MenuTitle>Likes</MenuTitle></OtherMenu>
+                </MenuHolder>
+                <TweetFeed />
             </Wrapper>
         )
-
     }
 };
 

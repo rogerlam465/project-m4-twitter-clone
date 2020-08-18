@@ -10,6 +10,7 @@ const Wrapper = styled.div`
     border-bottom: 8px solid lightgrey;
     padding-bottom: 20px;
     padding-left: 20px;
+    padding-right: 20px;
 `
 
 const NewTweetFormWrapper = styled.div`
@@ -55,7 +56,7 @@ const TweetPosterAvatarImg = styled.img`
 
 const TweetForm = () => {
 
-    const { currentUser, setCurrentUser, status, setStatus } = React.useContext(CurrentUserContext);
+    const { currentUser, status } = React.useContext(CurrentUserContext);
 
     const [charCountLeft, setCharCountLeft] = useState(280);
 
