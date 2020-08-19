@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { format } from 'date-fns';
+import { useParams } from "react-router";
 
 import TweetFeed from './GenericFeed';
 import { CurrentUserContext } from './CurrentUserContext';
@@ -125,15 +126,38 @@ const Profile = () => {
     const { feedStatus } = React.useContext(CurrentFeedContext);
     const { currentUser, status } = React.useContext(CurrentUserContext);
 
-    const thisUser = currentUser["profile"];
-    const rawDate = Date.parse(thisUser["joined"]);
-    const dateHandler = format(rawDate, "MMMM y");
+    const [thisUser, setThisUser] = React.useState(null);
 
-    if (status !== "done" || feedStatus !== "done") {
+    let userHold = useParams();
+
+    async function getUserData(pageUser) {
+        try {
+            let holder = await fetch("/api/" + pageUser + "/profile/");
+            let data = await holder.json();
+            console.log(data);
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        getUserData(userHold["profileId"]).then(data => {
+            setThisUser(data);
+        });
+    }, [thisUser, setThisUser])
+
+    console.log(thisUser["profile"]);
+
+    if (status !== "done" || feedStatus !== "done" || thisUser === []) {
         return <div>>Loading...</div>
     } else {
 
-        console.log(thisUser);
+        const rawDate = Date.parse(thisUser["joined"]);
+        const dateHandler = format(rawDate, "MMMM y");
+
+        // this needs to do those weird extra bits
+        // shows only your tweets and your retweets, I guess
 
         return (
             <Wrapper>
@@ -154,7 +178,7 @@ const Profile = () => {
                     <UserName>{thisUser["displayName"]}</UserName>
                     <UserHandle>@{thisUser["handle"]} <UserFollows>Follows you</UserFollows></UserHandle>
                     <UserBio>{thisUser["bio"]}</UserBio>
-                    <Spacer><GreySpace><GrLocation />{thisUser["location"]}</GreySpace> <GreySpace><FiCalendar />Joined {dateHandler}</GreySpace></Spacer>
+                    {/* <Spacer><GreySpace><GrLocation />{thisUser["location"]}</GreySpace> <GreySpace><FiCalendar />Joined {dateHandler}</GreySpace></Spacer> */}
                     <Spacer>{thisUser["numFollowing"]} <GreySpace>Following</GreySpace> {thisUser["numFollowers"]} <GreySpace>Followers</GreySpace></Spacer>
                 </UserWrapper>
                 <MenuHolder>

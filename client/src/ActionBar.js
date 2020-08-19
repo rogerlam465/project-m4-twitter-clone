@@ -34,6 +34,8 @@ const ActionBar = (props) => {
         return <div>Loading...</div>;
     } else {
 
+        // todo make likeable
+
         return (
             <Wrapper>
                 <FaRegComment />
