@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { format } from 'date-fns';
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useParams } from "react-router";
+import ActionBar from './ActionBar';
 
 import { CurrentUserContext } from './CurrentUserContext';
 import { CurrentFeedContext } from './HomeFeedContext';
@@ -77,23 +78,6 @@ const FeedMedia = styled.img`
     margin-bottom: 10px;
 `
 
-// action bar
-
-const ActionBar = styled.div`
-    display: flex;
-    justify-content: space-between;
-    font-size: 30px;
-    margin: 20px 0;
-    width: 100%;
-`
-
-const ActionBarIcon = styled.span`
-`
-
-const ActiveActionBarIcon = styled(ActionBarIcon)`
-    color: #237a3b};
-`
-
 const Header = styled.div`
     display: flex;
     align-items: center;
@@ -115,6 +99,12 @@ const TimeSpan = styled.div`
 `
 
 const TweetView = () => {
+
+    let history = useHistory();
+
+    function handleClick(profile) {
+        history.push("/" + profile);
+    }
 
     const { currentFeed, feedStatus } = React.useContext(CurrentFeedContext);
     const { status } = React.useContext(CurrentUserContext);
@@ -140,7 +130,7 @@ const TweetView = () => {
                         <TweetPosterAvatarImg src={thisTweet['author']["avatarSrc"]} />
                         <TweetPosterUsername>
                             <Username>{thisTweet['author']['displayName']}</Username>
-                            <Handle>@{thisTweet['author']['handle']} &middot; </Handle>
+                            <Handle onClick={() => { handleClick(thisTweet['author']['handle']) }}>@{thisTweet['author']['handle']} &middot; </Handle>
                         </TweetPosterUsername>
                     </TweetPosterDetails>
 
@@ -151,22 +141,7 @@ const TweetView = () => {
                             <div><FeedMedia src={thisTweet['media'][0]['url']} /></div>
                         }
                         <TimeSpan>{formattedTime} &middot; {formattedDate} &middot; Critter web app</TimeSpan>
-                        <ActionBar>
-                            <FaRegComment />
-                            {thisTweet['numRetweets'] > 0 &&
-                                <ActiveActionBarIcon><FaRetweet /></ActiveActionBarIcon>
-                            }
-                            {thisTweet['numRetweets'] === 0 &&
-                                <ActionBarIcon><FaRetweet /></ActionBarIcon>
-                            }
-                            {thisTweet['isLiked'] === true &&
-                                <ActiveActionBarIcon><FaRegHeart /></ActiveActionBarIcon>
-                            }
-                            {thisTweet['isLiked'] === false &&
-                                <ActionBarIcon><FaRegHeart /></ActionBarIcon>
-                            }
-                            <FiShare />
-                        </ActionBar>
+                        <ActionBar thisTweet={thisTweet} />
                     </FeedTweet>
 
                 </TweetWrapper>

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { format } from 'date-fns';
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 // this can't work. Can this work? it would be cool if it did.
 
@@ -72,7 +72,12 @@ const TweetFeed = () => {
     const { currentFeed, feedStatus } = React.useContext(CurrentFeedContext);
     const { status } = React.useContext(CurrentUserContext);
 
+    let history = useHistory();
     let { profileId } = useParams();
+
+    function handleClick(profile) {
+        history.push("/" + profile);
+    }
 
     if (feedStatus === "loading" || status === "loading") {
         return <div>Loading...</div>;
@@ -126,7 +131,7 @@ const TweetFeed = () => {
 
                                 <FeedTweet>
                                     <TweetPosterUsername>
-                                        <Username>{thisTweet['author']['displayName']}</Username><Handle>@{thisTweet['author']['handle']} &middot; {formattedDate}</Handle>
+                                        <Username>{thisTweet['author']['displayName']}</Username><Handle onClick={() => { handleClick(thisTweet['author']['handle']) }}>@{thisTweet['author']['handle']} &middot; {formattedDate}</Handle>
                                     </TweetPosterUsername>
                                     <TweetStatus>{thisTweet["status"]}</TweetStatus>
                                     {thisTweet['media'][0] &&

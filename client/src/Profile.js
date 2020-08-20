@@ -130,11 +130,12 @@ const Profile = () => {
 
     let userHold = useParams();
 
+    // this does not work as expected, and I do not care for that fact.
+
     async function getUserData(pageUser) {
         try {
             let holder = await fetch("/api/" + pageUser + "/profile/");
             let data = await holder.json();
-            console.log(data);
             return data;
         } catch (err) {
             console.log(err);
@@ -143,21 +144,16 @@ const Profile = () => {
 
     useEffect(() => {
         getUserData(userHold["profileId"]).then(data => {
-            setThisUser(data);
+            setThisUser(data["profile"]);
         });
     }, [thisUser, setThisUser])
 
-    console.log(thisUser["profile"]);
-
-    if (status !== "done" || feedStatus !== "done" || thisUser === []) {
+    if (status !== "done" || feedStatus !== "done" || thisUser === null) {
         return <div>>Loading...</div>
     } else {
 
         const rawDate = Date.parse(thisUser["joined"]);
         const dateHandler = format(rawDate, "MMMM y");
-
-        // this needs to do those weird extra bits
-        // shows only your tweets and your retweets, I guess
 
         return (
             <Wrapper>
@@ -170,15 +166,21 @@ const Profile = () => {
                             <AvatarImg src={thisUser["avatarSrc"]} />
                         </AvatarHolder>
                         <FollowBox>
-                            <FollowButton>Some dude</FollowButton>
+                            {thisUser["handle"] !== currentUser["profile"]["handle"] &&
+                                <FollowButton>{thisUser["isBeingFollowedByYou"] ? 'Unfollow' : 'Follow'}</FollowButton>
+                            }
                         </FollowBox>
                     </UserInfoWrapper>
                 </UserDetails>
                 <UserWrapper>
                     <UserName>{thisUser["displayName"]}</UserName>
-                    <UserHandle>@{thisUser["handle"]} <UserFollows>Follows you</UserFollows></UserHandle>
+                    <UserHandle>@{thisUser["handle"]}
+                        {thisUser["isFollowingYou"] &&
+                            <UserFollows>Follows you</UserFollows>
+                        }
+                    </UserHandle>
                     <UserBio>{thisUser["bio"]}</UserBio>
-                    {/* <Spacer><GreySpace><GrLocation />{thisUser["location"]}</GreySpace> <GreySpace><FiCalendar />Joined {dateHandler}</GreySpace></Spacer> */}
+                    <Spacer><GreySpace><GrLocation />{thisUser["location"]}</GreySpace> <GreySpace><FiCalendar />Joined {dateHandler}</GreySpace></Spacer>
                     <Spacer>{thisUser["numFollowing"]} <GreySpace>Following</GreySpace> {thisUser["numFollowers"]} <GreySpace>Followers</GreySpace></Spacer>
                 </UserWrapper>
                 <MenuHolder>
