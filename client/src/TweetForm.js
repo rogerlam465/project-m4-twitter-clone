@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { COLORS } from "./constants";
 
 import { CurrentUserContext } from './CurrentUserContext';
+import { CurrentFeedContext } from './HomeFeedContext';
 
 const Wrapper = styled.div`
     display: flex;
@@ -49,6 +50,17 @@ const NewTweetMeowButton = styled.button`
     width: 100px;
 `
 
+const DisabledMeowButton = styled(NewTweetMeowButton)`
+    border-radius: 25px;
+    background: #9884a3;
+    color: white;
+    padding: 10px;
+    border: none;
+    margin: 20px 0 0 20px;
+    font-size: 20px;
+    width: 100px;
+`
+
 const TweetPosterAvatarImg = styled.img`
     width: 60px;
     border-radius: 50%;
@@ -56,6 +68,7 @@ const TweetPosterAvatarImg = styled.img`
 
 const TweetForm = () => {
 
+    const { setFeed, setFeedStatus } = React.useContext(CurrentFeedContext);
     const { currentUser, status } = React.useContext(CurrentUserContext);
 
     const [charCountLeft, setCharCountLeft] = useState(280);
@@ -69,7 +82,42 @@ const TweetForm = () => {
         }
     }, [charCountLeft]);
 
-    // TODO - capture content and use fetch to post it
+    // refresh home feed after publishing
+    const handleAfterPublishTweet = async () => {
+        try {
+            let resHolder = await fetch("/api/me/home-feed");
+            let data = await resHolder.json();
+            console.log("data:", data);
+            setFeed(data);
+            setFeedStatus("done");
+        } catch (err) {
+            console.log(err);
+        };
+    };
+
+    // capture content and use fetch to post it
+
+    async function tweetPost() {
+
+        let statusValue = document.querySelector("#TweetTextBox").value;
+        let tweet = {
+            "status": statusValue
+        };
+        console.log(tweet);
+
+        try {
+            const response = await fetch("/api/tweet", {
+                method: 'POST',
+                body: tweet
+            });
+            let data = await response.json();
+            console.log("posted to feed:", data);
+            handleAfterPublishTweet();
+        } catch (err) {
+            console.log(err);
+        }
+
+    }
 
     if (status === "loading") {
         return <div>Loading...</div>;
@@ -86,7 +134,12 @@ const TweetForm = () => {
                     }} id="TweetTextBox" maxlength="280" placeholder="What's happening?" />
                     <NewTweetUIBox>
                         <div><span id="charCountLeft">{charCountLeft}</span></div>
-                        <div><NewTweetMeowButton>Meow</NewTweetMeowButton></div>
+                        {charCountLeft > 0 &&
+                            <div><NewTweetMeowButton id="meowButton" onClick={tweetPost}>Meow</NewTweetMeowButton></div>
+                        }
+                        {charCountLeft < 0 &&
+                            <div><DisabledMeowButton>Meow</DisabledMeowButton></div>
+                        }
                     </NewTweetUIBox>
                 </NewTweetFormWrapper>
             </Wrapper>

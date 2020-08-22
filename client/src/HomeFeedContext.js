@@ -25,7 +25,7 @@ export const CurrentFeedProvider = ({ children }) => {
 
 
     return (
-        <CurrentFeedContext.Provider value={{ currentFeed, feedStatus }}>
+        <CurrentFeedContext.Provider value={{ currentFeed, feedStatus, setFeed, setFeedStatus }}>
             {children}
         </CurrentFeedContext.Provider>
     );

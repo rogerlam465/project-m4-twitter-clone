@@ -98,6 +98,8 @@ const TimeSpan = styled.div`
     margin-top: 10px 0;
 `
 
+// to do: likes and post tweet
+
 const TweetView = () => {
 
     let history = useHistory();

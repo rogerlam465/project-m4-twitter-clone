@@ -72,6 +72,10 @@ const TweetFeed = () => {
     const { currentFeed, feedStatus } = React.useContext(CurrentFeedContext);
     const { status } = React.useContext(CurrentUserContext);
 
+    console.log("feed status " + feedStatus);
+
+    console.log("feed contents: ", currentFeed);
+
     let history = useHistory();
     let { profileId } = useParams();
 
@@ -94,7 +98,7 @@ const TweetFeed = () => {
             let unfilteredTweetIds = tweetIdsHolder.map(tweetId => {
                 const thisTweet = currentFeed.tweetsById[tweetId];
                 if (thisTweet["author"]["handle"] === profileId || thisTweet["isRetweeted"] === true) {
-                    return tweetId;
+                    return String(tweetId);
                 }
             })
 
@@ -104,7 +108,7 @@ const TweetFeed = () => {
             let unfilteredTweetIds = tweetIdsHolder.map(tweetId => {
                 const thisTweet = currentFeed.tweetsById[tweetId];
                 if (thisTweet["author"]["isBeingFollowedByYou"] === true) {
-                    return tweetId;
+                    return String(tweetId);
                 }
             })
 
