@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { format } from 'date-fns';
 import { useParams } from "react-router";
 
-import TweetFeed from './GenericFeed';
+import TweetFeed from './TweetFeed';
 import { CurrentUserContext } from './CurrentUserContext';
 import { CurrentFeedContext } from './HomeFeedContext';
 

@@ -25,7 +25,6 @@ import Sidebar from './Sidebar';
 // debugging. I can buy that.
 
 import { CurrentUserContext } from './CurrentUserContext';
-import { CurrentFeedContext } from './HomeFeedContext';
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -34,8 +33,7 @@ const ContentWrapper = styled.div`
 
 const App = () => {
 
-  const { currentUser, setCurrentUser, status, setStatus } = React.useContext(CurrentUserContext);
-  const { currentFeed, setFeed, feedStatus, setFeedStatus } = React.useContext(CurrentFeedContext);
+  const { status } = React.useContext(CurrentUserContext);
 
   if (status !== "loading") {
     return (

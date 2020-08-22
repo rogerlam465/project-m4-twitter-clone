@@ -100,18 +100,17 @@ const TweetForm = () => {
     async function tweetPost() {
 
         let statusValue = document.querySelector("#TweetTextBox").value;
-        let tweet = {
-            "status": statusValue
-        };
-        console.log(tweet);
 
         try {
             const response = await fetch("/api/tweet", {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 method: 'POST',
-                body: tweet
+                body: JSON.stringify({ "status": statusValue })
             });
             let data = await response.json();
-            console.log("posted to feed:", data);
+            document.querySelector("#TweetTextBox").value = "";
             handleAfterPublishTweet();
         } catch (err) {
             console.log(err);

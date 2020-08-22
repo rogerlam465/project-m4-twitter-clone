@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import TweetFeed from './GenericFeed';
+import TweetFeed from './TweetFeed';
 import TweetForm from './TweetForm';
 import { CurrentUserContext } from './CurrentUserContext';
 import { CurrentFeedContext } from './HomeFeedContext';

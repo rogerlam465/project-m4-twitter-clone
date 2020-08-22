@@ -8,8 +8,8 @@ import ActionBar from './ActionBar';
 import { CurrentUserContext } from './CurrentUserContext';
 import { CurrentFeedContext } from './HomeFeedContext';
 
-import { FiShare, FiArrowLeft } from 'react-icons/fi';
-import { FaRegComment, FaRetweet, FaRegHeart } from 'react-icons/fa';
+import { FiArrowLeft } from 'react-icons/fi';
+
 
 // Wrapper contains the whole vertical feed.
 
@@ -132,7 +132,7 @@ const TweetView = () => {
                         <TweetPosterAvatarImg src={thisTweet['author']["avatarSrc"]} />
                         <TweetPosterUsername>
                             <Username>{thisTweet['author']['displayName']}</Username>
-                            <Handle onClick={() => { handleClick(thisTweet['author']['handle']) }}>@{thisTweet['author']['handle']} &middot; </Handle>
+                            <Handle onClick={() => { handleClick(thisTweet['author']['handle']) }}>@{thisTweet['author']['handle']}</Handle>
                         </TweetPosterUsername>
                     </TweetPosterDetails>
 

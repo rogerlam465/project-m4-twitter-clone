@@ -20,15 +20,48 @@ const ActionBarIcon = styled.span`
 `
 
 const ActiveActionBarIcon = styled(ActionBarIcon)`
-    color: #237a3b};
+    color: #ba3c59};
 `
 
 const ActionBar = (props) => {
 
-    const { feedStatus } = React.useContext(CurrentFeedContext);
+    const { setFeed, feedStatus, setFeedStatus } = React.useContext(CurrentFeedContext);
     const { status } = React.useContext(CurrentUserContext);
 
     const thisTweet = props.thisTweet;
+
+    const handleAfterLike = async () => {
+        try {
+            let resHolder = await fetch("/api/me/home-feed");
+            let data = await resHolder.json();
+            console.log("data:", data);
+            setFeed(data);
+            setFeedStatus("done");
+        } catch (err) {
+            console.log(err);
+        };
+    };
+
+    async function likeTweet(postId) {
+        try {
+
+            const url = "/api/tweet/" + postId + "/like";
+            const likeVal = !thisTweet["isLiked"];
+
+            const response = await fetch(url, {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'PUT',
+                body: JSON.stringify({ "like": likeVal })
+            });
+            let data = await response.json();
+            handleAfterLike();
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     if (feedStatus === "loading" || status === "loading") {
         return <div>Loading...</div>;
@@ -49,11 +82,12 @@ const ActionBar = (props) => {
                 }
                 {
                     thisTweet['isLiked'] === true &&
-                    <ActiveActionBarIcon><FaRegHeart /></ActiveActionBarIcon>
+                    <ActiveActionBarIcon><FaRegHeart onClick={() => { likeTweet(thisTweet["id"]) }} /></ActiveActionBarIcon>
                 }
+
                 {
                     thisTweet['isLiked'] === false &&
-                    <ActionBarIcon><FaRegHeart /></ActionBarIcon>
+                    <ActionBarIcon><FaRegHeart onClick={() => { likeTweet(thisTweet["id"]) }} /></ActionBarIcon>
                 }
                 <FiShare />
             </Wrapper>

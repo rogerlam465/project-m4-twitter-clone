@@ -2,8 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { format } from 'date-fns';
 import { Link, useHistory } from "react-router-dom";
-
-// this can't work. Can this work? it would be cool if it did.
+import { FiShare } from 'react-icons/fi';
 
 import { useParams } from "react-router";
 
@@ -11,12 +10,11 @@ import ActionBar from './ActionBar';
 import { CurrentUserContext } from './CurrentUserContext';
 import { CurrentFeedContext } from './HomeFeedContext';
 
-const TweetWrapper = styled(Link)`
+const TweetWrapper = styled.div`
     display: flex;
     align-items: start;
     margin: 20px 20px 20px 20px;
-    text-decoration: none;
-    color: black;
+
 `
 
 // this needs to contain an avatar, that's it
@@ -48,10 +46,18 @@ const Handle = styled.span`
 // this should contain the header, the content, and then the action bar.
 // oh my god. The action bar is centered in the Detail view, but left-justified
 // in the feed view. why would you do that. why.
-const FeedTweet = styled.div`
+
+const ContentWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
+const FeedTweet = styled(Link)`
     width: 700px;
     border-bottom: 1px lightgrey solid;
     margin-left: 20px;
+    text-decoration: none;
+    color: black;
 `
 const TweetStatus = styled.div`
     font-size: 20px;
@@ -69,12 +75,8 @@ const ActionBarHolder = styled.div`
 `
 
 const TweetFeed = () => {
-    const { currentFeed, feedStatus } = React.useContext(CurrentFeedContext);
-    const { status } = React.useContext(CurrentUserContext);
-
-    console.log("feed status " + feedStatus);
-
-    console.log("feed contents: ", currentFeed);
+    const { currentFeed, feedStatus, getFeedData } = React.useContext(CurrentFeedContext);
+    const { currentUser, status } = React.useContext(CurrentUserContext);
 
     let history = useHistory();
     let { profileId } = useParams();
@@ -87,33 +89,14 @@ const TweetFeed = () => {
         return <div>Loading...</div>;
     } else {
 
-        let tweetIds = [];
-        const tweetIdsHolder = currentFeed.tweetIds;
+        // update according to location
+        // if there's no profileId, assume it's the logged in user
+        // otherwise, pass the profileId to getFeedData
+
+        let tweetIds = currentFeed.tweetIds;
 
         // this section checks to see if we're in a profile page.
         // if so, only grab relevant tweets.
-
-        if (profileId) {
-
-            let unfilteredTweetIds = tweetIdsHolder.map(tweetId => {
-                const thisTweet = currentFeed.tweetsById[tweetId];
-                if (thisTweet["author"]["handle"] === profileId || thisTweet["isRetweeted"] === true) {
-                    return String(tweetId);
-                }
-            })
-
-            tweetIds = unfilteredTweetIds.filter(item => item !== undefined);
-
-        } else {
-            let unfilteredTweetIds = tweetIdsHolder.map(tweetId => {
-                const thisTweet = currentFeed.tweetsById[tweetId];
-                if (thisTweet["author"]["isBeingFollowedByYou"] === true) {
-                    return String(tweetId);
-                }
-            })
-
-            tweetIds = unfilteredTweetIds.filter(item => item !== undefined);
-        }
 
         return (
             <>
@@ -128,24 +111,32 @@ const TweetFeed = () => {
                         // OR, we could just copy-paste everything.
 
                         return (
-                            <TweetWrapper to={'/tweet/' + thisTweet['id']}>
+                            <TweetWrapper>
+
+                                {thisTweet['isRetweeted'] &&
+                                    <span><FiShare />{currentUser["profile"]["displayName"]} Remeowed</span>
+                                }
                                 <TweetPosterDetails>
                                     <TweetPosterAvatarImg src={thisTweet['author']["avatarSrc"]} />
                                 </TweetPosterDetails>
 
-                                <FeedTweet>
-                                    <TweetPosterUsername>
-                                        <Username>{thisTweet['author']['displayName']}</Username><Handle onClick={() => { handleClick(thisTweet['author']['handle']) }}>@{thisTweet['author']['handle']} &middot; {formattedDate}</Handle>
-                                    </TweetPosterUsername>
-                                    <TweetStatus>{thisTweet["status"]}</TweetStatus>
-                                    {thisTweet['media'][0] &&
-                                        <div><FeedMedia src={thisTweet['media'][0]['url']} /></div>
-                                    }
+                                <ContentWrapper>
+                                    <FeedTweet to={'/tweet/' + thisTweet['id']}>
+                                        <TweetPosterUsername>
+                                            <Username>{thisTweet['author']['displayName']}</Username><Handle onClick={() => { handleClick(thisTweet['author']['handle']) }}>@{thisTweet['author']['handle']} &middot; {formattedDate}</Handle>
+                                        </TweetPosterUsername>
+                                        <TweetStatus>{thisTweet["status"]}</TweetStatus>
+                                        {thisTweet['media'][0] &&
+                                            <div><FeedMedia src={thisTweet['media'][0]['url']} /></div>
+                                        }
+                                    </FeedTweet>
+
+
                                     <ActionBarHolder>
                                         <ActionBar thisTweet={thisTweet} />
                                     </ActionBarHolder>
 
-                                </FeedTweet>
+                                </ContentWrapper>
 
                             </TweetWrapper>
                         )
